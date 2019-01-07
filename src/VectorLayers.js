@@ -1,54 +1,49 @@
 import React from 'react';
-import {GeoJSON} from 'react-leaflet';
+import PropTypes from 'prop-types';
+import { GeoJSON } from 'react-leaflet';
 
-export default class VectorLayers extends React.Component {
-  
-    
- 
-    shouldComponentUpdate(nextProps, nextState) {
-    if (nextProps.selected){
-      this.setState({selected: true});
-      this.refs.geojson.leafletElement.setStyle({
-        color: 'red'
-      });
+class VectorLayers extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            key: this.props.layer.name,
+            data: this.props.layer,
+            style: {
+                weight: 0,
+                fillColor: this.props.color,
+                fillOpacity: this.props.color,
+            },
+        }
     }
-    return false;
-  }
 
-
-  styleLayers (feature) {
-        return {
-            color: '#11ffec',
-            weight: 0.5,
-            fillColor: "#1ffd62",
-            fillOpacity: 0.5
-        }; 
-    };
-    createJsonDivs = () => {
-        let layersArray = this.props.layersArray
-        let geojsonDivs = []
-        layersArray.forEach(element => {
-            console.log(element.name)
-            geojsonDivs.push(
-                <GeoJSON
-                    ref="geojson"
-                    key={element.name}
-                    data={element}
-                    style={this.styleLayers}
-                />
-            )
-        });
-
-        return geojsonDivs
+    static getDerivedStateFromProps(nextProps, prevState){
+        if(nextProps.color!==prevState.style.fillColor || nextProps.alpha!==prevState.style.fillOpacity){
+            return {style: {
+                weight: 0,
+                fillColor : nextProps.color,
+                fillOpacity : nextProps.color
+            }}
+        }
+        else return null;
     }
-    
-    render() {
-        return(
-            <div>
-                {this.createJsonDivs()}
-            </div>
-        )
+
+    render(){
+        return (
+            <GeoJSON
+                key={ this.state.key }
+                data={ this.state.data }
+                style={() => {return ({
+                    weight: 0, 
+                    fillColor: this.state.style.fillColor, 
+                    fillOpacity: this.state.style.fillOpacity})}}
+            />
+        );
     }
 }
 
+VectorLayers.propTypes = {
+    layer: PropTypes.shape().isRequired,
+    color: PropTypes.string.isRequired
+};
 
+export default VectorLayers;

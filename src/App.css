@@ -17,4 +17,9 @@ body {
      z-index: 400;
      top: 0;
      right: 0;
+     text-align: center;
+ }
+ 
+ .layers-controls{
+    text-align: left;
  }
