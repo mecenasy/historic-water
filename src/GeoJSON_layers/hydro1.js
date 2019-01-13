@@ -1,4 +1,4 @@
-export  const Hydro1 = ({
+export const Hydro1 = ({
 "type": "FeatureCollection",
 "name": "hydro1",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },

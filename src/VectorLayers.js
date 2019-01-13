@@ -30,11 +30,11 @@ class VectorLayers extends React.Component{
     render(){
         return (
             <GeoJSON
-                key={ this.state.key }
+                key={ this.state.key + "_vector_layer" }
                 data={ this.state.data }
                 style={() => {return ({
-                    weight: 0, 
-                    fillColor: this.state.style.fillColor, 
+                    weight: 0,
+                    fillColor: this.state.style.fillColor,
                     fillOpacity: this.state.style.fillOpacity})}}
             />
         );

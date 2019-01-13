@@ -20,8 +20,8 @@ class App extends Component {
             zoom: 13.5,
             layers: [Hydro1, Osady],
             colors: {
-                [Hydro1.name]: {r: 111, g: 111, b: 111, a: 1},
-                [Osady.name]: {r: 111, g: 111, b: 111, a: 1}
+                [Hydro1.name]: {r: 50, g: 50, b: 255, a: 1},
+                [Osady.name]: {r:50, g: 50, b: 255, a: 1}
             },
             checkboxes: {
                 [Hydro1.name]: false,
@@ -30,10 +30,11 @@ class App extends Component {
         }
     }
 
-    handleChangeColor = (color) => {
+    handleChangeColor = (layerName) => {
+      return (color) => {
         var newColor = update(this.state, {
             colors: {
-                [Hydro1.name]: {
+                [layerName]: {
                         r: {$set: color.rgb.r},
                         g: {$set: color.rgb.g},
                         b: {$set: color.rgb.b},
@@ -41,20 +42,23 @@ class App extends Component {
                 }
         });
         this.setState(newColor);
+      }
     };
 
-    handleChangeAlpha = (color) => {
+    handleChangeAlpha = (layerName) => {
+      return (color) => {
         var newAlpha = update(this.state, {
             colors: {
-                [Hydro1.name]: {
+                [layerName]: {
                         a: {$set: color.rgb.a}
                     }
                 }
         });
         this.setState(newAlpha);
-    };
+      };
+    }
 
-    
+
     toggleCheckbox = (e) => {
         this.setState({
             checkboxes: {
@@ -79,7 +83,7 @@ class App extends Component {
                         attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
                     />
                     {
-                        this.state.layers.map((layer) => ( 
+                        this.state.layers.map((layer) => (
                             this.state.checkboxes[layer.name] && (
                                 <VectorLayers
                                     key={ layer.name }

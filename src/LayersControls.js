@@ -3,7 +3,7 @@ import Checkbox from './Checkbox'
 import {HuePicker, AlphaPicker} from 'react-color'
 
 const LayersControls = ({ layers, handleChange, checkboxes, colors, onChangeColor, onChangeAlpha }) => (
-    
+
     <div className="layers-controls">
         {
             layers.map((layer) => (
@@ -18,12 +18,12 @@ const LayersControls = ({ layers, handleChange, checkboxes, colors, onChangeColo
                     <HuePicker
                         key={ layer.name + '_hue' }
                         color={ colors[layer.name]}
-                        onChange={ onChangeColor }
+                        onChange={ onChangeColor(layer.name) }
                     />
                     <AlphaPicker
                         key={ layer.name + '_alpha' }
                         color={ colors[layer.name] }
-                        onChange={ onChangeAlpha }
+                        onChange={ onChangeAlpha(layer.name) }
                     />
                     <br key={ layer.name + '_space' }/>
                 </div>
