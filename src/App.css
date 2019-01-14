@@ -17,9 +17,29 @@ body {
      z-index: 400;
      top: 0;
      right: 0;
+     min-width: 250px;
      text-align: center;
  }
  
  .layers-controls{
     text-align: left;
+    margin-bottom: 20px;
  }
+
+ .layer_changer{
+    max-width: 230px;
+ }
+
+ .timeline{
+    position: absolute;
+    z-index: 500;
+    bottom: 0;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0;
+    right: 0; 
+    width: 80%; 
+    height: 100px;
+    background-color: rgb(255, 255, 255);
+    font-size: 80%;
+}
