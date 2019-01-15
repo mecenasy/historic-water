@@ -171,7 +171,6 @@ class App extends Component {
                             this.state.timelineVisible ?
                                 this.state.flood_marks.map((feature, index) => {
                                     if(this.state.flood_date === feature.properties.flood_date) {
-                                        console.log(this.state.flood_date);
                                         return (
                                             <Marker 
                                                 key = {feature.geometry.coordinates.join('_') + '_' + index}
