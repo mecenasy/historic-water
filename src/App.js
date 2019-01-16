@@ -226,7 +226,7 @@ class App extends Component {
                         <div className='layers-controls'>
                             <Checkbox
                                 value={ 'flood_marks_checkbox' }
-                                label={ 'Znaki wodne' }
+                                label={ 'Znaki wielkiej wody' }
                                 handleChange={ this.toggleFloodMarksCheckbox }
                                 checked={ this.state.flood_marks_checked }
                                 key={ 'flood_marks_checkbox' }
@@ -251,6 +251,14 @@ class App extends Component {
                             onChangeAlpha={ this.handleChangeAlpha }
                         />
                     </Collapse>
+                </Card>
+                <Card className = "footer_license">
+                    <CardText>
+                        <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">
+                        <img className="img-license" alt="Licencja Creative Commons" src="https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png" /></a>
+                        <span xmlns="http://purl.org/dc/terms/" href="http://purl.org/dc/dcmitype/InteractiveResource" property="dct:title" rel="dct:type">Historic Water</span> by 
+                        <span xmlns="http://creativecommons.org/ns#" property="cc:attributionName"> Marek Kania</span> is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Uznanie autorstwa-Użycie niekomercyjne-Na tych samych warunkach 4.0 Międzynarodowe License</a>
+                    </CardText>                
                 </Card>
             </div>
         );
