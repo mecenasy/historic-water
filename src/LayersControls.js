@@ -16,13 +16,13 @@ const LayersControls = ({ layers, handleChange, checkboxes, colors, onChangeColo
                         key={ layer.name + '_checkbox' }
                     />
                     <HuePicker
-                        className='layer_changer'
+                        className='layer-changer'
                         key={ layer.name + '_hue' }
                         color={ colors[layer.name]}
                         onChange={ onChangeColor(layer.name) }
                     />
                     <AlphaPicker
-                        className='layer_changer'
+                        className='layer-changer'
                         key={ layer.name + '_alpha' }
                         color={ colors[layer.name] }
                         onChange={ onChangeAlpha(layer.name) }

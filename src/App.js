@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Map, TileLayer, Marker, Popup} from 'react-leaflet';
 import './App.css';
-import { Hydro1, Osady } from '../src/GeoJSON_layers/hydro1';
-import VectorLayers from './VectorLayers';
+import { Hydro1, Osady, MAP1936 } from '../src/GeoJSON_layers/hydro1';
+import VectorLayer from './VectorLayer';
 import { Collapse, Button, Card, CardTitle, CardText, Input } from 'reactstrap';
 import LayersControls from './LayersControls';
 import update from 'immutability-helper';
@@ -33,14 +33,16 @@ class App extends Component {
                 lng: 19.94,
             },
             zoom: 13.5,
-            layers: [Hydro1, Osady],
+            layers: [Hydro1, Osady, MAP1936],
             colors: {
                 [Hydro1.name]: {r: 50, g: 50, b: 255, a: 1},
-                [Osady.name]: {r:50, g: 50, b: 255, a: 1}
+                [Osady.name]: {r:50, g: 50, b: 255, a: 1},
+                [MAP1936.name]: {r:50, g: 50, b: 255, a: 1}
             },
             checkboxes: {
                 [Hydro1.name]: false,
-                [Osady.name]: false
+                [Osady.name]: false,
+                [MAP1936.name]: false
             },
             collapse: false,
             dropdownOpen: false,
@@ -152,14 +154,16 @@ class App extends Component {
         return (
             <div className='map'>
                 <Map className='map' center={position} zoom={this.state.zoom}>
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"
+                    <TileLayer className='main-map'
+                        url='https://{s}.tile.openstreetmap.se/hydda/full/{z}/{x}/{y}.png'
+                        attribution='Tiles courtesy of <a href="http://openstreetmap.se/" target="_blank">OpenStreetMap Sweden</a> 
+                            &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                        opacity='1'
                     />
                     {
                         this.state.layers.map((layer) => (
                             this.state.checkboxes[layer.name] && (
-                                <VectorLayers
+                                <VectorLayer
                                     key={ layer.name }
                                     layer={ layer }
                                     color={ this.readRGBA(this.state.colors[layer.name]) }
@@ -252,7 +256,7 @@ class App extends Component {
                         />
                     </Collapse>
                 </Card> 
-                <Card className = "footer_license">
+                <Card className = "footer-license">
                     <CardText>
                         Historic Water created by Marek Kania is licensed under a 
                         <a rel="license" href="https://github.com/mkaniaa/historic-water/blob/master/LICENSE"> GNU GENERAL PUBLIC LICENSE</a>

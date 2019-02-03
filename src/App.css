@@ -26,7 +26,7 @@ body {
     margin-bottom: 20px;
  }
 
- .layer_changer{
+ .layer-changer{
     max-width: 230px;
  }
 
@@ -44,7 +44,7 @@ body {
     font-size: 80%;
 }
 
-.footer_license{
+.footer-license{
     position: absolute;
     z-index: 405;
     bottom: 0;
@@ -52,10 +52,6 @@ body {
     min-width: 250px;
     text-align: left;
     font-size: 12px;
-}
-
-.img-license{
-    padding-right: 5px
 }
 
 

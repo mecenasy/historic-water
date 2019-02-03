@@ -2,21 +2,43 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { GeoJSON } from 'react-leaflet';
 
-const VectorLayer = ({ layer, color}) => {
-    
-    const layerStyle = {
-        weight: 0,
-        fillColor: color,
-        fillOpacity: color
-    };
+class VectorLayer extends React.Component{
+    constructor(props){
+        super(props);
+        this.state={
+            key: this.props.layer.name,
+            data: this.props.layer,
+            style: {
+                weight: 0,
+                fillColor: this.props.color,
+                fillOpacity: this.props.color,
+            },
+        }
+    }
 
-    return (
-        <GeoJSON
-            key={ layer.name }
-            data={ layer }
-            style={ layerStyle }
-        />
-    );
+    static getDerivedStateFromProps(nextProps, prevState){
+        if(nextProps.color!==prevState.style.fillColor || nextProps.alpha!==prevState.style.fillOpacity){
+            return {style: {
+                weight: 0,
+                fillColor : nextProps.color,
+                fillOpacity : nextProps.color
+            }}
+        }
+        else return null;
+    }
+
+    render(){
+        return (
+            <GeoJSON
+                key={ this.state.key + "_vector_layer" }
+                data={ this.state.data }
+                style={() => {return ({
+                    weight: 0,
+                    fillColor: this.state.style.fillColor,
+                    fillOpacity: this.state.style.fillOpacity})}}
+            />
+        );
+    }
 }
 
 VectorLayer.propTypes = {
