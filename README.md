@@ -1,3 +1,5 @@
+This project will be finished soon. Now you can see trial version on: http://openhydrology.org/maps/historic-water/
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
