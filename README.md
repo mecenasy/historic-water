@@ -1,3 +1,8 @@
+This project will be done soon. Now you can see the trial version on: http://openhydrology.org/maps/historic-water/
+
+The project is a map portal used to visualize spatial changes taking place in time. The application displays vector thematic layers, created by drawing hydrography of Krakow from historical maps from different years. An additional element is a layer showing the location of large watermarks in the city and a time line that allows you to filter the displayed signs in relation to the dates of floods. The tool allows for quick analysis of changes in the state of a given event in time.
+
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
