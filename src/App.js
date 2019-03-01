@@ -26,7 +26,8 @@ class App extends Component {
 
     constructor(props) {
         super(props);
-
+        // nie będę się rozwodził na zasadnością tego statu
+        // z innej strony do takiego globalnego stanu służy redux
         this.state = {
             location: {
                 lat: 50.06,
@@ -56,26 +57,46 @@ class App extends Component {
         }
     }
 
+            // componentDidMount już jest po pierwszym renderze
+            // a całą tą operacje powinieneś zrobić własnie w construktorze całego componentu 
+            // co spowoduje przyśpieszenie jego wyrenderowania
+            // tutaj urzywamy setState generalnie tylko jeśli potrzebujemy elementy DOM
+            // wszystko inne możan zrobić tak jak opisałem w VectorLayer
+
     componentDidMount() {
         this.setState({
             floods_dates: this.getArrayOfFloodDates()
         })
     }
-
+    
+    // generalnie jezeli tworzysz funcje które odnoszą się do `this` i przekazujesz je do innych componentów 
+    // twórz je poprzez arrow function nie ma potrzeby ich bindować mniej w ten sposub błędów nie  popełnisz
+    // na tomias wszystkie inne mozesz robić normalnie ja osobiście nie zalecam takieg sposobu bo mozesz popełniać błędy
+    // zalecałbym mimo wszystko wszystkie pisać jak arrow function
     getArrayOfFloodDates = () => {
+        // z typami typ Set Map itp trzeba uważać nie wszystie przeglądarki je poprawnie obsługuję
+        // a zwłaszcza ich odmianami  jezeli juz to bym urzył tutaj zwykłego Set.
         var datesSet = new SortedSet();
         const datesArray = [];
+        // funcje przekazywane do funkcji powiny być osobno delarowane i przekazywana referencja
         this.state.flood_marks.forEach(function(nextDate) {
             datesSet.add(nextDate.properties.flood_date);
         });
+        // ten forEach jest w tym miejscu zupełnie nie potrzebny
         datesSet.forEach(function(date) {
             datesArray.push(date);
 
         })
+        
+        // wystarczy zwrucić Array.from(datesSet).sort();
         return datesArray;
     }
 
     indexClickDate = (floodIndex) => {
+        // w setState nie odnosisz się do poprzedniego stanu poprzez 'this.state.doSomething' jest to bardzo niebezpieczne
+        // w przypadku wystąpienia powiedzmy 100 setState nie masz żadnej pewności że się to poprwanie wykona poniaważ nie wiesz
+        // jaką wartość ma 'this.state.doSomething' takie operacje tylko i wyłącznie za pośrednicwem prevStete przekazywanym do pierwszego 
+        // argumentu funckje która jest prekazywana do 'setState'
         this.setState({ 
             valueTimeline: floodIndex, 
             previousValueTimeline: this.state.valueTimeline,
@@ -84,7 +105,13 @@ class App extends Component {
     }
 
     handleChangeColor = (layerName) => {
+        // poco ten return wystacy zrobić  handle = (a) => (b) => { ..... }
       return (color) => {
+          // urzywaj const lub let są bezpiechniejsz poczytaj o zasiengach zmiennych 
+          // jezeli wyciągasz coś ze stata do innej na niej coś operujesz  zmiennej musisz mieć pewność
+          // że nowy obiekt nie jest z mutowany 
+          // w tym przypadku bardziej bym poszedł w stronę cloneDeep z loadash
+          // generalnie zaznajom się z tą biblioteką jest bardzo przydatna
         var newColor = update(this.state, {
             colors: {
                 [layerName]: {
@@ -97,7 +124,7 @@ class App extends Component {
         this.setState(newColor);
       }
     };
-
+    // jak wyrzej
     handleChangeAlpha = (layerName) => {
       return (color) => {
         var newAlpha = update(this.state, {
@@ -113,16 +140,20 @@ class App extends Component {
 
     readRGBA = (objectRGBA) => {
         var arrayRGBA = Object.values(objectRGBA);
+        // do takiego budowania stringa urzył bym template string 
+        //  `cos ${zmienna lub wywołanie jakiejś funkcji } cos` 
         return 'rgba(' + arrayRGBA.join(', ') + ')';
     }
 
     
     toggleCollapseLayersList = () => {
+        // to samo co w `indexClickDate`
         this.setState({ 
             collapse: !this.state.collapse });
     }
-
-    toggleFloodMarksCheckbox = (e) => {
+    // w tej funkcji nie urzywasz 'e' wiec nie ma sensu wstawiać takiego argumentu
+     toggleFloodMarksCheckbox = (e) => {
+        // to samo co w `indexClickDate`
         this.setState({
             flood_marks_checked: !this.state.flood_marks_checked
         })
@@ -160,6 +191,7 @@ class App extends Component {
                             &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
                         opacity='1'
                     />
+                    // Generalnie z każdej z poniższych map zrobiłbym odobny komponent w tedy cały ten render byłby durzo czytelniejszy
                     {
                         this.state.layers.map((layer) => (
                             this.state.checkboxes[layer.name] && (
@@ -171,8 +203,16 @@ class App extends Component {
                             )
                         ))
                     }
+                    // operator truj argumentowy zagnieżdzony w operatorze trujargumentowym ojej
+                    // takie warunki są nie dopuszczalne bardzo trudno się w nich odnaleść co jest co 
                     {   this.state.flood_marks_checked ?
+                        // po pierwszym warunk w przypadku nie powodzenia zwucisz postego diva poco?
+                        // wystarczyło by urzyć operatora wyboru && ale musisz przy nim uwarzać 
+                        // ponieważ jesli zminna na podstawie której wybierasz jest numberem  wyrenderuje ci się '0'
+                        // bezpiecznie jest się zabezpieczyć na taką okolicznaoś podwujnym zaprzeczeniem albo 'Boolean(zmienna)'
                             this.state.timelineVisible ?
+                                // takie przypadku gdzie potrzebujesz wyfiltrować nie pasujące elementy lub posortować etc..
+                                // zrub to przed funkcją map wtedy kod jest durzo bardzie czytelniejszy ale również szybzy
                                 this.state.flood_marks.map((feature, index) => {
                                     if(this.state.flood_date === feature.properties.flood_date) {
                                         return (
@@ -180,6 +220,7 @@ class App extends Component {
                                                 key = {feature.geometry.coordinates.join('_') + '_' + index}
                                                 position={[feature.geometry.coordinates[1], feature.geometry.coordinates[0]]}
                                                 icon={floodMarkIcon}>
+                                                    // totaj formatowanie tych dwóch linijek bardzo by pomogło w czytelności
                                                 <Popup>{feature.properties.flood_date}<br />{feature.geometry.coordinates[1]}
                                                     <br />{feature.geometry.coordinates[0]}</Popup>
                                             </Marker>
@@ -206,13 +247,15 @@ class App extends Component {
                             <div className='timeline'>
                                 <HorizontalTimeline
                                     index={this.state.valueTimeline}
+                                    // przekazana funkcja powinna być zdeklarowana w skopie class'y
                                     indexClick={(index) => {
                                         this.indexClickDate(index);
                                     }} 
                                     values={this.state.floods_dates}
                                 />
                             </div>
-                        :
+                        : 
+                        // tak jak porzyzej nie ma potrzeby trenderowania tego diva wdług mnie tego otacającego również 
                         <div/>
                     }
                 </div>
