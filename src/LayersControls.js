@@ -6,13 +6,18 @@ const LayersControls = ({ layers, handleChange, checkboxes, colors, onChangeColo
 
     <div className="layers-controls">
         {
+            // poniewaz w skopie tej funkcji urzywasz często laye.name możesz zrobić
+            //  layers.map(({ name }) => (
+            // nie będzies musial tyle razy powtarzać zmiennej layer tyle razy
             layers.map((layer) => (
+                // w tym miejscy 'key' jest obowiązkowy ale zamias `'_div'` w tym przypadku urzyłbym index drugiego argumentu funkcji map 
                 <div key= {layer.name + '_div'}>
                     <Checkbox
                         value={ layer.name }
                         label={ layer.name }
                         handleChange={ handleChange }
                         checked={ checkboxes[layer.name] }
+                        // 'ten 'key' nie jest tutaj potrzebny jak rónież w trzech poniżej komponentach
                         key={ layer.name + '_checkbox' }
                     />
                     <HuePicker
