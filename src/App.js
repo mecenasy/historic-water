@@ -22,6 +22,9 @@ var floodMarkIcon = L.icon({
     shadowAnchor: [12.5, 41]
 });
 
+// wszsytkie plikie w których wystę pują komponenty nazywaj *.jsx łatwiej je będziesz identyfikował 
+// pozatym generanie jest taki standera nazewnictwa
+
 class App extends Component {
 
     constructor(props) {
