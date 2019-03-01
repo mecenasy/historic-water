@@ -58,7 +58,7 @@ class VectorLayer extends React.Component{
     }
 }
 
-// Generalnie cały ten plik można sprovadzić do tego 
+// Generalnie cały ten plik można sprowadzić do tego 
 // const VectorLayer = (props) => ({
  //     <GeoJSON
 //             data={ props.data }
